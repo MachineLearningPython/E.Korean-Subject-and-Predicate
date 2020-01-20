@@ -69,7 +69,7 @@ class MyWindow(QWidget):
         <span style=\" font-size:12pt; font-weight:600; color:#ff0000;\" >주어    :  빨간색</span><p>
         <span style=\" font-size:12pt; font-weight:600; color:#b8860b;\" >목적어  :  주황색</span><p>
         <span style=\" font-size:12pt; font-weight:600; color:#ffd700;\" >보어    :  노란색</span><p>
-        <span style=\" font-size:12pt; font-weight:600; color:#008000;\" >관용어  :  초록색</span><p>
+        <span style=\" font-size:12pt; font-weight:600; color:#008000;\" >관형어  :  초록색</span><p>
         <span style=\" font-size:12pt; font-weight:600; color:#0000ff;\" >부사어  :  파란색</span><p>
         <span style=\" font-size:12pt; font-weight:600; color:#4b0082;\" >감탄사  :  남색</span><p>
         <span style=\" font-size:12pt; font-weight:600; color:#800080;\" >서술어  :  보라색</span><p>
