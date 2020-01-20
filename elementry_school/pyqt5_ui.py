@@ -60,7 +60,7 @@ class MyWindow(QWidget):
         self.staticLabel = QLabel()
         self.staticLabel.setFixedHeight(20)
 
-        self.staticLabel.setText("<span style=\" font-size:15pt; font-weight:600; color:#ff0000;\" >'주어'</span>와 <span style=\" font-size:15pt; font-weight:600; color:#0000ff;\" >'서술어'</span>로 된 문장이 되도록 해보세요")
+        self.staticLabel.setText("<span style=\" font-size:15pt; font-weight:600; color:#ff0000;\" >'주어'</span>와 <span style=\" font-size:15pt; font-weight:600; color:#800080;\" >'서술어'</span>가 포함된 문장이 되도록 해보세요")
 
         self.addbtn = QPushButton("입력하기")
 
@@ -146,11 +146,11 @@ class MyWindow(QWidget):
         text = self.inputTextEdit.text().split()
         if len(text) == 0:
             return
-        elif len(text) == 1:
-            self.staticLabel.setText("<span style=\" font-size:15pt; font-weight:600; color:#ff0000;\" >'주어'</span>와 <span style=\" font-size:15pt; font-weight:600; color:#0000ff;\" >'서술어'</span>중에 하나가 없는거같아요. 띄어쓰기가 안되어있다면 해주세요.")
+        elif len(text) < 2:
+            self.staticLabel.setText("<span style=\" font-size:15pt; font-weight:600; color:#ff0000;\" >'주어'</span>와 <span style=\" font-size:15pt; font-weight:600; color:#800080;\" >'서술어'</span>중에 하나가 없는거같아요. 띄어쓰기가 안되어있다면 해주세요.")
             return
-        elif len(text) >= 3:
-            self.staticLabel.setText("<span style=\" font-size:15pt; font-weight:600; color:#ff0000;\" >'주어'</span>와 <span style=\" font-size:15pt; font-weight:600; color:#0000ff;\" >'서술어'</span>이외의 단어가 들어가지 않게 해주세요.")
+        elif len(text) >= 4:
+            self.staticLabel.setText("<span style=\" font-size:15pt; font-weight:600; color:#ff0000;\" >'주어'</span>와 <span style=\" font-size:15pt; font-weight:600; color:#800080;\" >'서술어'</span>이외의 단어가 들어가지 않게 해주세요.")
             return
         self.resultstr = ''
         for word in text:
@@ -158,7 +158,7 @@ class MyWindow(QWidget):
         self.resultEdit.append(self.resultstr)
         self.inputTextEdit.setText('')
         
-        self.staticLabel.setText("<span style=\" font-size:15pt; font-weight:600; color:#ff0000;\" >'주어'</span>와 <span style=\" font-size:15pt; font-weight:600; color:#0000ff;\" >'서술어'</span>로 된 문장이 되도록 해보세요")
+        self.staticLabel.setText("<span style=\" font-size:15pt; font-weight:600; color:#ff0000;\" >'주어'</span>와 <span style=\" font-size:15pt; font-weight:600; color:#800080;\" >'서술어'</span>가 포함된 문장이 되도록 해보세요")
         
         #아래 내용을 사용하면 팝업 메세지가 나온다.
         #QMessageBox.about(self, "message", "clicked")

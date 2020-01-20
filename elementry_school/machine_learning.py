@@ -67,12 +67,31 @@ def listen(text):
 
         color:#ff0000 => 빨간색
         color:#0000ff => 파란색
+        color:#00ff00 => 초록색
+
+        주어    --  빨간색  #ff0000
+        목적어  --  주황색  #ff8c00
+        보어    --  노란색  #ffff00
+        관형어  --  초록색  #008000
+        부사어  --  파란색  #0000ff
+        감탄사  --  남색    #4b0082
+        서술어  --  보라색  #800080
         ----------------------------------------------------------------------------------------
     '''
     if label == "subject":
         return "<span style=\" font-size:20pt; font-weight:600; color:#ff0000;\" >" + text + " </span>"
-    elif label == "predicate":
+    elif label == "object":
+        return "<span style=\" font-size:20pt; font-weight:600; color:#ff8c00;\" >" + text + " </span>"
+    elif label == "complement":
+        return "<span style=\" font-size:20pt; font-weight:600; color:#ffff00;\" >" + text + " </span>"
+    elif label == "adjective":
+        return "<span style=\" font-size:20pt; font-weight:600; color:#008000;\" >" + text + " </span>"
+    elif label == "adverbs":
         return "<span style=\" font-size:20pt; font-weight:600; color:#0000ff;\" >" + text + " </span>"
+    elif label == "interjection":
+        return "<span style=\" font-size:20pt; font-weight:600; color:#4b0082;\" >" + text + " </span>"
+    elif label == "predicate":
+        return "<span style=\" font-size:20pt; font-weight:600; color:#800080;\" >" + text + " </span>"
 
     #이 아래 주석문을 사용하게 되면 콘솔창에 label정보와 confidence정보가 출력되게 합니다.
     #print ("result: '%s' with %d%% confidence" % (label, confidence))
