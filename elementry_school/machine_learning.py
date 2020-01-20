@@ -13,6 +13,9 @@
 # import requests는 파이썬에서 HTTP에 요청을 보내기 위한 모듈입니다.
 import requests
 
+
+CheckSubject = False
+CheckPredicate = False
 '''
     ----------------------------------------------------------------------------------------
     classify 함수는 위에서 언급한 홈페이지에 학습된 데이터에 접근하여
@@ -50,6 +53,9 @@ def classify(text):
 def listen(text):
     demo = classify(text)
 
+    # global을 붙이면 함수 밖에 있는 변수를 사용할 수 있게 됩니다.
+    global CheckSubject 
+    global CheckPredicate 
     ''' 
         ----------------------------------------------------------------------------------------
         label은 subject(주어)인지, predicate(서술어)인지에 대한 정보를 갖게 됩니다.
@@ -70,20 +76,24 @@ def listen(text):
         color:#00ff00 => 초록색
 
         주어    --  빨간색  #ff0000
-        목적어  --  주황색  #ff8c00
-        보어    --  노란색  #ffff00
-        관형어  --  초록색  #008000
+        목적어  --  주황색  #b8860b
+        보어    --  노란색  #ffd700
+        관용어  --  초록색  #008000
         부사어  --  파란색  #0000ff
         감탄사  --  남색    #4b0082
         서술어  --  보라색  #800080
         ----------------------------------------------------------------------------------------
     '''
     if label == "subject":
-        return "<span style=\" font-size:20pt; font-weight:600; color:#ff0000;\" >" + text + " </span>"
+        if not CheckSubject:
+            CheckSubject = True
+            return "<span style=\" font-size:20pt; font-weight:600; color:#ff0000;\" >" + text + " </span>"
+        else:
+            return "<span style=\" font-size:20pt; font-weight:600; color:#ffd700;\" >" + text + " </span>"
     elif label == "object":
-        return "<span style=\" font-size:20pt; font-weight:600; color:#ff8c00;\" >" + text + " </span>"
-    elif label == "complement":
-        return "<span style=\" font-size:20pt; font-weight:600; color:#ffff00;\" >" + text + " </span>"
+        return "<span style=\" font-size:20pt; font-weight:600; color:#b8860b;\" >" + text + " </span>"
+#    elif label == "complement":
+#        return "<span style=\" font-size:20pt; font-weight:600; color:#ffff00;\" >" + text + " </span>"
     elif label == "adjective":
         return "<span style=\" font-size:20pt; font-weight:600; color:#008000;\" >" + text + " </span>"
     elif label == "adverbs":
@@ -91,6 +101,7 @@ def listen(text):
     elif label == "interjection":
         return "<span style=\" font-size:20pt; font-weight:600; color:#4b0082;\" >" + text + " </span>"
     elif label == "predicate":
+        CheckPredicate = True
         return "<span style=\" font-size:20pt; font-weight:600; color:#800080;\" >" + text + " </span>"
 
     #이 아래 주석문을 사용하게 되면 콘솔창에 label정보와 confidence정보가 출력되게 합니다.

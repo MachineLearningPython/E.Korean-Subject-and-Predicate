@@ -60,9 +60,20 @@ class MyWindow(QWidget):
         self.staticLabel = QLabel()
         self.staticLabel.setFixedHeight(20)
 
-        self.staticLabel.setText("<span style=\" font-size:15pt; font-weight:600; color:#ff0000;\" >'주어'</span>와 <span style=\" font-size:15pt; font-weight:600; color:#800080;\" >'서술어'</span>가 포함된 문장이 되도록 해보세요")
+        self.staticLabel.setText("<span style=\" font-size:15pt; font-weight:600; color:#ff0000;\" >'주어'</span>와 <span style=\" font-size:15pt; font-weight:600; color:#800080;\" >'서술어'</span>가 포함된 '평서문'이되도록 해보세요")
 
         self.addbtn = QPushButton("입력하기")
+
+        self.infoLabel = QLabel()
+        self.infoLabel.setText("""
+        <span style=\" font-size:12pt; font-weight:600; color:#ff0000;\" >주어    :  빨간색</span><p>
+        <span style=\" font-size:12pt; font-weight:600; color:#b8860b;\" >목적어  :  주황색</span><p>
+        <span style=\" font-size:12pt; font-weight:600; color:#ffd700;\" >보어    :  노란색</span><p>
+        <span style=\" font-size:12pt; font-weight:600; color:#008000;\" >관용어  :  초록색</span><p>
+        <span style=\" font-size:12pt; font-weight:600; color:#0000ff;\" >부사어  :  파란색</span><p>
+        <span style=\" font-size:12pt; font-weight:600; color:#4b0082;\" >감탄사  :  남색</span><p>
+        <span style=\" font-size:12pt; font-weight:600; color:#800080;\" >서술어  :  보라색</span><p>
+                            """)
 
         # 버튼이 클릭되면 연결될 함수를 지정해줍니다. self.addbtn이 클릭되면( 여기에 지정한 함수 수행 )
         self.addbtn.clicked.connect(self.addbtn_clicked)
@@ -103,9 +114,11 @@ class MyWindow(QWidget):
         self.grid.addWidget(self.addbtn,1,1)
 
         self.grid.addWidget(self.staticLabel,2,0)
-
+        
         # resultEdit는 여러줄에 대한 표시를 해야되므로 (X시작좌표, Y시작좌표, X끝좌표, Y끝좌표)를 넣어야 합니다.
         self.grid.addWidget(self.resultEdit,3,0,5,1)
+
+        self.grid.addWidget(self.infoLabel,3,1,5,2)
 
         self.setLayout(self.grid)
 
@@ -149,17 +162,25 @@ class MyWindow(QWidget):
         elif len(text) < 2:
             self.staticLabel.setText("<span style=\" font-size:15pt; font-weight:600; color:#ff0000;\" >'주어'</span>와 <span style=\" font-size:15pt; font-weight:600; color:#800080;\" >'서술어'</span>중에 하나가 없는거같아요. 띄어쓰기가 안되어있다면 해주세요.")
             return
-        elif len(text) >= 4:
-            self.staticLabel.setText("<span style=\" font-size:15pt; font-weight:600; color:#ff0000;\" >'주어'</span>와 <span style=\" font-size:15pt; font-weight:600; color:#800080;\" >'서술어'</span>이외의 단어가 들어가지 않게 해주세요.")
-            return
+#        elif len(text) >= 4:
+#            self.staticLabel.setText("<span style=\" font-size:15pt; font-weight:600; color:#ff0000;\" >'주어'</span>와 <span style=\" font-size:15pt; font-weight:600; color:#800080;\" >'서술어'</span>이외의 단어가 들어가지 않게 해주세요.")
+#            return
         self.resultstr = ''
         for word in text:
             self.resultstr += ml.listen(word)
+
+        if ml.CheckPredicate and ml.CheckSubject:    
+            self.staticLabel.setText("<span style=\" font-size:15pt; font-weight:600; color:#ff0000;\" >'주어'</span>와 <span style=\" font-size:15pt; font-weight:600; color:#800080;\" >'서술어'</span>가 포함된 '평서문'이되도록 해보세요")      
+        else:
+            self.staticLabel.setText("<span style=\" font-size:15pt; font-weight:600; color:#ff0000;\" >'주어'</span>와 <span style=\" font-size:15pt; font-weight:600; color:#800080;\" >'서술어'</span>중에 하나가 없는거같아요. 띄어쓰기가 안되어있다면 해주세요.")
+#           만약 주어 서술어가 반드시 포함되어야 한다면 이 주석을 제거해주세요!
+#           return
+
         self.resultEdit.append(self.resultstr)
         self.inputTextEdit.setText('')
-        
-        self.staticLabel.setText("<span style=\" font-size:15pt; font-weight:600; color:#ff0000;\" >'주어'</span>와 <span style=\" font-size:15pt; font-weight:600; color:#800080;\" >'서술어'</span>가 포함된 문장이 되도록 해보세요")
-        
+        ml.CheckSubject = False
+        ml.CheckPredicate = False
+
         #아래 내용을 사용하면 팝업 메세지가 나온다.
         #QMessageBox.about(self, "message", "clicked")
     
