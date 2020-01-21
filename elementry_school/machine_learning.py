@@ -13,7 +13,7 @@
 # import requests는 파이썬에서 HTTP에 요청을 보내기 위한 모듈입니다.
 import requests
 
-
+# 문장에 주어가 포함되어있는지( CheckSubject ), 서술어가 포함되어있는지( CheckPredicate ) 확인하기 위한 변수입니다.
 CheckSubject = False
 CheckPredicate = False
 '''
@@ -85,7 +85,7 @@ def listen(text):
         ----------------------------------------------------------------------------------------
     '''
     if label == "subject":
-        if not CheckSubject:
+        if not CheckSubject: # 해당부분에 아직 주어가 없다면 주어로 정해주고, 주어가 이미 있다면 보어로 정해줍니다.
             CheckSubject = True
             return "<span style=\" font-size:20pt; font-weight:600; color:#ff0000;\" >" + text + " </span>"
         else:
@@ -105,4 +105,22 @@ def listen(text):
         return "<span style=\" font-size:20pt; font-weight:600; color:#800080;\" >" + text + " </span>"
 
     #이 아래 주석문을 사용하게 되면 콘솔창에 label정보와 confidence정보가 출력되게 합니다.
+    '''
+        ----------------------------------------------------------------------------------------
+        print 함수는 기본 내장 함수입니다.
+
+        %s, %d 는 자료형을 담기위한 포멧(형태)을 나타냅니다.
+        %s : 문자형
+        %d : 숫자형
+
+        다음과 같은 형태로 사용하면 변수를 문자에 담을 수 있습니다.
+        print(" 넣고싶은 문자를 입력하세요 :  %s  이 문자가 들어갔습니다."  %  (변수))
+        
+        % 는 %s, %d와 매칭하여 (변수1, 변수2, ...) 괄호 안에 있는 변수를 순서대로 문자안에 담게 됩니다.
+
+        다음과같은 형태로도 사용이 가능합니다.
+        print("넣고 싶은 문자 : ", 변수)
+        위 형태는 해당 문자열 뒤에 변수가 이어붙게 됩니다.
+        ----------------------------------------------------------------------------------------
+    '''
     #print ("result: '%s' with %d%% confidence" % (label, confidence))

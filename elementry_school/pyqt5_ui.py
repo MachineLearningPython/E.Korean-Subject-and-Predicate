@@ -126,7 +126,6 @@ class MyWindow(QWidget):
         
         # resultEdit는 여러줄에 대한 표시를 해야되므로 (X시작좌표, Y시작좌표, X끝좌표, Y끝좌표)를 넣어야 합니다.
         self.grid.addWidget(self.resultEdit,3,0,5,1)
-
         self.grid.addWidget(self.infoLabel,3,1,5,2)
 
         self.setLayout(self.grid)
@@ -182,9 +181,10 @@ class MyWindow(QWidget):
             self.staticLabel.setText("<span style=\" font-size:15pt; font-weight:600; color:#ff0000;\" >'주어'</span>와 <span style=\" font-size:15pt; font-weight:600; color:#800080;\" >'서술어'</span>가 포함된 '평서문'이되도록 해보세요")      
         else:
             self.staticLabel.setText("<span style=\" font-size:15pt; font-weight:600; color:#ff0000;\" >'주어'</span>와 <span style=\" font-size:15pt; font-weight:600; color:#800080;\" >'서술어'</span>중에 하나가 없는거같아요. 띄어쓰기가 안되어있다면 해주세요.")
-#           만약 주어 서술어가 반드시 포함되어야 한다면 이 주석을 제거해주세요!
+#           만약 주어 서술어가 반드시 포함되어야 한다면 아래 주석( # )을 제거해주세요!
 #           return
 
+        #문제가 없다면 색이 입혀진 문장을 추가해주고 ( append ), 입력창과 필요변수를 초기화 (빈칸으로) 해줍니다.
         self.resultEdit.append(self.resultstr)
         self.inputTextEdit.setText('')
         ml.CheckSubject = False
@@ -227,5 +227,5 @@ if __name__ == "__main__":
 
 
 '''
-    PyQt에 대해 알고싶으신 분은 https://wikidocs.net/5222 이쪽에 정보가 더 자세히 있습니다.
+    PyQt에 대해 더 알고싶으신 분은 https://wikidocs.net/5222 이쪽에 정보가 더 자세히 있습니다.
 '''
