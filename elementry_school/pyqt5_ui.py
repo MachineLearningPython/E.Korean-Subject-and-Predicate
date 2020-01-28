@@ -33,6 +33,10 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 # 기존에 만들어놓은 machine_learning.py 코드를 불러옵니다. as ml은 코드작성시 ml로 줄여 작성하겠다는 뜻입니다.
 import machine_learning as ml
+import microphone
+
+
+mic = microphone.Microphone()
 
 '''
     ----------------------------------------------------------------------------------------
@@ -57,21 +61,32 @@ class MyWindow(QWidget):
     def __init__(self):
         super().__init__()
         self.initUI()
+        global mic
 
     # 화면을 구성하기 위한 함수입니다.
     def initUI(self):
 
         # widget : 화면 내부에 있는 [입력창, 버튼] 같은 위젯들을 구성합니다.
+        '''
+            ------------------------------------------
+            QLineEdit() : 한줄 텍스트를 입력받을 수 있는 위젯입니다.
+            QTextEdit() : 여러줄 텍스트를 입력받을 수 있는 위젯입니다.
+            QLabel() : 텍스트를 화면에 표시하기 위한 라벨 위젯입니다. (입력불가)
+
+            setReadOnly(True)를 하면 텍스트를 입력할 수 없게 됩니다.
+            setFixedHeight(숫자) 를 하면 숫자 크기만큼의 높이영역을 위젯이 가지게 됩니다.
+            setFixedWidth(숫자) 도 마찬가지입니다.
+            setText 함수로 글자를 담을 수 있습니다.
+            ------------------------------------------
+        '''
         self.inputTextEdit = QLineEdit()
         self.resultEdit = QTextEdit()
         self.resultEdit.setReadOnly(True)
 
         self.staticLabel = QLabel()
-        self.staticLabel.setFixedHeight(20)
+        self.staticLabel.setFixedHeight(25)
 
         self.staticLabel.setText("<span style=\" font-size:15pt; font-weight:600; color:#ff0000;\" >'주어'</span>와 <span style=\" font-size:15pt; font-weight:600; color:#800080;\" >'서술어'</span>가 포함된 '평서문'이되도록 해보세요")
-
-        self.addbtn = QPushButton("입력하기")
 
         self.infoLabel = QLabel()
         self.infoLabel.setText("""
@@ -80,13 +95,24 @@ class MyWindow(QWidget):
         <span style=\" font-size:12pt; font-weight:600; color:#ffd700;\" >보어    :  노란색</span><p>
         <span style=\" font-size:12pt; font-weight:600; color:#008000;\" >관형어  :  초록색</span><p>
         <span style=\" font-size:12pt; font-weight:600; color:#0000ff;\" >부사어  :  파란색</span><p>
-        <span style=\" font-size:12pt; font-weight:600; color:#4b0082;\" >감탄사  :  남색</span><p>
+        <span style=\" text-decoration:line-through; font-size:12pt; font-weight:600; color:#4b0082;\" >감탄사  :  남색</span><p>
         <span style=\" font-size:12pt; font-weight:600; color:#800080;\" >서술어  :  보라색</span><p>
                             """)
+
+        self.addbtn = QPushButton("입력하기")
 
         # 버튼이 클릭되면 연결될 함수를 지정해줍니다. self.addbtn이 클릭되면( 여기에 지정한 함수 수행 )
         self.addbtn.clicked.connect(self.addbtn_clicked)
         
+
+        # 음성인식 버튼을 만드는 과정입니다. 마이크가 연결되어있지 않다면 비활성화합니다. self.voiceInputbtn이 클릭되면( 지정한 함수 수행 )
+        self.voiceInputbtn = QPushButton("음성으로 입력하기")
+
+        if mic.isConnected == False:
+            self.voiceInputbtn.setEnabled(False)
+
+        self.voiceInputbtn.clicked.connect(self.voiceInputbtn_clicked)
+
         # font : 화면에 표시할 텍스트의 Font(글씨체)를 구성합니다. setBold(True)는 텍스트를 굵게 한다는 뜻입니다.
         font = QtGui.QFont('굴림', 13)
         font.setBold(True)
@@ -123,6 +149,7 @@ class MyWindow(QWidget):
         self.grid.addWidget(self.addbtn,1,1)
 
         self.grid.addWidget(self.staticLabel,2,0)
+        self.grid.addWidget(self.voiceInputbtn,2,1)
         
         # resultEdit는 여러줄에 대한 표시를 해야되므로 (X시작좌표, Y시작좌표, X끝좌표, Y끝좌표)를 넣어야 합니다.
         self.grid.addWidget(self.resultEdit,3,0,5,1)
@@ -193,6 +220,14 @@ class MyWindow(QWidget):
         #아래 내용을 사용하면 팝업 메세지가 나온다.
         #QMessageBox.about(self, "message", "clicked")
     
+    def voiceInputbtn_clicked(self):
+        voicedata = mic.listen()
+        if voicedata[1] == False:
+            self.staticLabel.setText(voicedata[0])
+        else:
+            self.inputTextEdit.setText(voicedata[0])
+            self.addbtn_clicked()
+
 
     # 키보드가 눌렸을 때 사용되는 이벤트 처리 함수
     '''
