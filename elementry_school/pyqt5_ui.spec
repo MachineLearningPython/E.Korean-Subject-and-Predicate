@@ -4,7 +4,7 @@ block_cipher = None
 
 
 a = Analysis(['pyqt5_ui.py'],
-             pathex=['C:\\Users\\PC\\Desktop\\E.Korean-Subject-and-Predicate\\elementry_school'],
+             pathex=['C:\\Users\\PC\\Documents\\GitHub\\E.Korean-Subject-and-Predicate\\elementry_school'],
              binaries=[],
              datas=[],
              hiddenimports=[],
@@ -30,4 +30,4 @@ exe = EXE(pyz,
           upx=True,
           upx_exclude=[],
           runtime_tmpdir=None,
-          console=False )
+          console=False , icon='test.ico')
