@@ -31,12 +31,21 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-# 기존에 만들어놓은 machine_learning.py 코드를 불러옵니다. as ml은 코드작성시 ml로 줄여 작성하겠다는 뜻입니다.
+'''
+    ----------------------------------------------------------------------------------------
+    아래 import 들은 다른 .py 파일을 불러오기 위해 사용됩니다.
+    다른 파일에 있는 코드를 바로 사용할 수 있게됩니다.
+
+    import machine_learning as ml                   machine_learning.py 파일을 불러옵니다. as는 뒤에 나오는 말로 별칭을 주기 위함입니다.
+                                                    이후 ml.함수 또는 ml.변수 로 접근할 수 있습니다.
+    
+    from microphone import Microphone               microphone.py 파일을 불러와 Microphone 클래스를 불러오기 위함입니다.
+    from microphone import *                        보통은 왼쪽과 같이 모든 클래스를 한꺼번에 불러옵니다.
+    ----------------------------------------------------------------------------------------
+'''
 import machine_learning as ml
-import microphone
+from microphone import Microphone
 
-
-mic = microphone.Microphone()
 
 '''
     ----------------------------------------------------------------------------------------
@@ -58,10 +67,11 @@ mic = microphone.Microphone()
 class MyWindow(QWidget):
 
     # 클래스가 만들어졌을 때 초기화하기 위한 함수입니다. super은 자기자신의 부모인 QWidget을 가리킵니다.
-    def __init__(self):
+    # self.mic = mic 는 인자값 mic로 받아온 변수를 내부 변수화하기 위함입니다. 이후 클래스 안에서 self.mic로 자유롭게 사용할 수 있습니다.
+    def __init__(self, mic):
         super().__init__()
         self.initUI()
-        global mic
+        self.mic = mic
 
     # 화면을 구성하기 위한 함수입니다.
     def initUI(self):
@@ -164,6 +174,7 @@ class MyWindow(QWidget):
     
     # 입력하기 버튼이 눌러졌을 때 수행되는 함수입니다.
     '''
+        ----------------------------------------------------------------------------------------
         split(문자) 함수는 문자열을 문자 기준으로 자를때 사용됩니다.
 
         문자를 빈칸으로 두면 띄어쓰기로 나눠져 리스트(배열) 형태로 저장됩니다.
@@ -189,6 +200,7 @@ class MyWindow(QWidget):
 
         setText(내용) 해당 위젯에 텍스트 내용을 넣는다.
         append(내용) 해당 위젯에 텍스트 내용을 추가한다. 
+        ----------------------------------------------------------------------------------------
     '''
     def addbtn_clicked(self):
         text = self.inputTextEdit.text().split()
@@ -220,6 +232,18 @@ class MyWindow(QWidget):
         #아래 내용을 사용하면 팝업 메세지가 나온다.
         #QMessageBox.about(self, "message", "clicked")
     
+    #음성으로 인식하기 버튼이 눌렸을 때 수행
+    '''
+        ----------------------------------------------------------------------------------------
+        mic.listen 함수를 통해 마이크로 입력된 목소리를 텍스트로 변환시켜 voicedata에 저장합니다.
+        반환되는 값은 microphone listen함수의 return 값을 보시면 list로 반환하는 것을 볼 수 있습니다.
+
+        if voicedata[1] == False:           <-- 반환받은 데이터가 오류메시지(False)라면 수행
+            오류메세지를 출력해준다
+        else:                               <-- 반환받은 데이터가 정상적인메시지(True)라면 수행
+            메세지 데이터를 분석하기위해 addbtn_clicked 함수로 넘겨준다.   
+        ----------------------------------------------------------------------------------------
+    '''
     def voiceInputbtn_clicked(self):
         voicedata = mic.listen()
         if voicedata[1] == False:
@@ -231,10 +255,12 @@ class MyWindow(QWidget):
 
     # 키보드가 눌렸을 때 사용되는 이벤트 처리 함수
     '''
+        ----------------------------------------------------------------------------------------
         if 원소 in 리스트:  <-- 리스트에 원소가 포함되어있다면 수행
             해당 구문 수행
 
         키보드를 e 로 가져와 눌린 키가 엔터키라면 입력하기 버튼을 누른 효과와 같게 하기위해 addbtn_clicked 함수를 요청한다.
+        ----------------------------------------------------------------------------------------
     '''
     def keyPressEvent(self, e):
         if e.key() in [Qt.Key_Return, Qt.Key_Enter]:
@@ -249,14 +275,16 @@ class MyWindow(QWidget):
     사실 위 코드를 지워도 수행자체에는 문제가 없다.
     pyqt5_ui.py를 다른곳에서 import 해서 사용할 경우 __main__이 아니게 되어 코드실행이 안되게 뛰어넘는다.
 
+    Microphone 클래스 : microphone.py 파일에 있는 마이크와 관련된 클래스이다.
     QApplication 클래스 : 이벤트처리 loop를 위해 (이벤트를 계속 입력받을수 있게 하기위해) 잡아두는 클래스이다.
     exec_() 를 하게되면 이벤트입력을 계속 받을 수 있다.
 
     MyWindow 클래스를 생성해서 show()를 하여 화면에 띄워주게 된다.
 '''
 if __name__ == "__main__":
+    mic = Microphone()
     app = QApplication(sys.argv)
-    myWindow = MyWindow()
+    myWindow = MyWindow(mic)
     myWindow.show()
     app.exec_()
 
