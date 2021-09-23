@@ -26,6 +26,16 @@
     위 코드들은 화면을 구성하고 버튼, 입력창등을 띄우고 상호작용하기 위한 모듈입니다.
     ----------------------------------------------------------------------------------------
 '''
+'''
+    ----------------------------------------------------------------------------------------
+    PyQt관련 dll 오류 발생시 ("ImportError: unable to find Qt5Core.dll on PATH")
+    
+    pip install pyqt5==5.12.2
+    pip install pyqt5-tools==5.11.3.1.4
+    
+    수행하기 바랍니다. (버젼에 따라 호환성 차이가 발생함)
+    ----------------------------------------------------------------------------------------
+'''
 import sys
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
@@ -43,7 +53,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
     from microphone import *                        보통은 왼쪽과 같이 모든 클래스를 한꺼번에 불러옵니다.
     ----------------------------------------------------------------------------------------
 '''
-import machine_learning as ml
+import machine_learning_Api as ml
 from microphone import Microphone
 
 
