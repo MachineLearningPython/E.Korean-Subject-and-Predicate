@@ -2,13 +2,15 @@ import json
 from ibm_watson import AssistantV2
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 
-authenticator = IAMAuthenticator('vAMm-pBINthdcmHkr2iikkUVdp1oMBsqPj-niJ7RpygC')
+import properties.properties as key
+
+authenticator = IAMAuthenticator(key.api_key)
 assistant = AssistantV2(
     version='2021-06-14',
     authenticator=authenticator
 )
 assistant.set_service_url('https://api.kr-seo.assistant.watson.cloud.ibm.com')
-assistant_id = '56454324-a11c-48a6-891a-48864f7168d8'
+assistant_id = key.assistant_id
 
 from ibm_watson import ApiException
 

@@ -77,13 +77,13 @@ class Microphone:
                 audio = self.r.listen(source)
             return [self.r.recognize_google(audio,language='ko-KR'), True]
         except sr.UnknownValueError:
-            return ["음성을 제대로 인식하지 못하였습니다.",False]
+            return ["인식하지 못하였습니다.",False]
         except sr.RequestError:
             return ["모듈설치 오류입니다.",False]
         except sr.WaitTimeoutError:
             return ["시간초과입니다.",False]
-        except OSError as e:
-            return ["마이크를 찾을 수 없습니다. {} {} {}".format(e.errno,e.filename,e.strerror),False]
+        except OSError:
+            return ["마이크를 찾을 수 없습니다.",False]
 
 '''
     -----------------------------------------------
